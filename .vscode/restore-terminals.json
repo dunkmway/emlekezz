@@ -1,0 +1,29 @@
+{
+  "keepExistingTerminalsOpen": false,
+  "runOnStartup": false,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "supabase",
+          "commands": ["supabase start"]
+        },
+        {
+          "name": "deno",
+          "commands": ["cd server", "deno task dev"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "app",
+          "commands": ["cd client", "npm run start"]
+        },
+        {
+          "name": "working"
+        }
+      ]
+    }
+  ]
+}
