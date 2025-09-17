@@ -6,7 +6,15 @@
       "splitTerminals": [
         {
           "name": "supabase",
-          "commands": ["supabase start"]
+          "commands": ["npx supabase start"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "angular",
+          "commands": ["cd client", "npm run dev"]
         },
         {
           "name": "deno",
@@ -16,10 +24,6 @@
     },
     {
       "splitTerminals": [
-        {
-          "name": "app",
-          "commands": ["cd client", "npm run start"]
-        },
         {
           "name": "working"
         }
