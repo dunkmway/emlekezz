@@ -1,0 +1,17 @@
+meta {
+  name: chat
+  type: http
+  seq: 2
+}
+
+post {
+  url: localhost:8000
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "message": "I am testing to see if I properly created my chat api endpoint to talk with you. Can you confirm this test?"
+  }
+}

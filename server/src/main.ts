@@ -1,8 +1,26 @@
-export function add(a: number, b: number): number {
-  return a + b;
+import { routes } from "./routes.ts";
+
+async function handler(req: Request): Promise<Response> {
+  console.log(`${req.method}: ${req.url}`);
+
+  for (const route in routes) {
+    const pattern = new URLPattern({ pathname: "/api" + route }).exec(req.url);
+
+    if (pattern) {
+      const method = req.method.toLowerCase();
+
+      if (method === "get" || method === "post") {
+        return await routes[route][method]?.(req, pattern) ??
+          new Response("Internal Server Error", {
+            status: 500,
+          });
+      }
+    }
+  }
+
+  return new Response("Not found", {
+    status: 404,
+  });
 }
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
-if (import.meta.main) {
-  console.log("Add 2 + 3 =", add(2, 3));
-}
+Deno.serve(handler);
