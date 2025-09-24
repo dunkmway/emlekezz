@@ -1,5 +1,10 @@
 {
+  "scripts": {
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:generate": "supabase gen types typescript --local > server/src/database.types.ts"
+  },
   "devDependencies": {
-    "supabase": "^2.40.7"
+    "supabase": "^2.45.5"
   }
 }
