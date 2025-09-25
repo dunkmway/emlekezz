@@ -3,6 +3,7 @@
     "denoland.vscode-deno",
     "Angular.ng-template",
     "EthanSK.restore-terminals",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-containers"
   ]
 }

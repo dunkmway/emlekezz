@@ -6,19 +6,23 @@
       "splitTerminals": [
         {
           "name": "supabase",
-          "commands": ["npx supabase start"]
+          "commands": ["npm run supabase:start"]
+        },
+        {
+          "name": "ollama",
+          "commands": ["cd development", "docker compose up"]
         }
       ]
     },
     {
       "splitTerminals": [
         {
-          "name": "angular",
+          "name": "client",
           "commands": ["cd client", "npm run dev"]
         },
         {
-          "name": "deno",
-          "commands": ["cd server", "deno task dev"]
+          "name": "server",
+          "commands": ["npm run supabase:serve"]
         }
       ]
     },
