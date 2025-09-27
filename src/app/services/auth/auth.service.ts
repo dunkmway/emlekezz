@@ -43,16 +43,16 @@ export class AuthService {
   );
 
   /**
-   * Computes the user's preferred full name by concatenating the preferred first name
-   * and, if available, the preferred last name separated by a space.
-   * If the preferred first name is not set, an empty string is used.
-   * If the preferred last name is not set, only the first name is returned.
+   * Computes the user's full name by concatenating the first name
+   * and, if available, the last name separated by a space.
+   * If the first name is not set, an empty string is used.
+   * If the last name is not set, only the first name is returned.
    *
-   * @returns The computed preferred full name as a string.
+   * @returns The computed full name as a string.
    */
-  preferredName = computed(() => {
-    const prefLast = this.lastName();
-    return `${this.firstName() ?? ''}${prefLast ? ` ${prefLast}` : ''}`;
+  name = computed(() => {
+    const last = this.lastName();
+    return `${this.firstName() ?? ''}${last ? ` ${last}` : ''}`;
   });
 
   private resetAuthState() {
