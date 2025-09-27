@@ -1,9 +1,11 @@
 {
   "recommendations": [
-    "denoland.vscode-deno",
-    "Angular.ng-template",
+    "angular.ng-template",
+    "ms-azuretools.vscode-docker",
+    "Prisma.prisma",
+    "vitest.explorer",
+    "ms-playwright.playwright",
     "EthanSK.restore-terminals",
-    "esbenp.prettier-vscode",
-    "ms-azuretools.vscode-containers"
+    "esbenp.prettier-vscode"
   ]
 }

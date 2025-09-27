@@ -5,25 +5,21 @@
     {
       "splitTerminals": [
         {
-          "name": "ollama",
+          "name": "docker",
           "commands": ["cd development", "docker compose up"]
-        }
-      ]
-    },
-    {
-      "splitTerminals": [
-        {
-          "name": "client",
-          "commands": ["cd client", "npm run dev"]
         },
         {
-          "name": "server",
-          "commands": ["npm run supabase:start", "npm run supabase:serve"]
+          "name": "prisma",
+          "commands": ["npm run prisma:studio -- --browser none"]
         }
       ]
     },
     {
       "splitTerminals": [
+        {
+          "name": "app",
+          "commands": ["npm run dev"]
+        },
         {
           "name": "working"
         }
