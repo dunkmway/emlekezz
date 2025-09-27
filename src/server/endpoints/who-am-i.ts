@@ -26,8 +26,7 @@ export const whoAmIHandler: RouteHandlerMethod = async (req, res) => {
 
   return {
     id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    username: user.username,
     roles: user.roles,
     permissions: user.permissions,
   };

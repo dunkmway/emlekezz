@@ -4,8 +4,7 @@ import { Permission, Role, ROLE_PERMISSION_MAP } from '../../../security';
 
 type WhoAmI = {
   id: string;
-  firstName: string;
-  lastName: string;
+  username: string;
   roles: Role[];
   permissions: Permission[];
 };
@@ -22,8 +21,7 @@ export class AuthService {
 
   authenticated = signal(false);
   userId = signal<string | undefined>(undefined);
-  firstName = signal<string | undefined>(undefined);
-  lastName = signal<string | undefined>(undefined);
+  username = signal<string | undefined>(undefined);
   roles = signal<Role[]>([]);
   permissions = signal<Permission[]>([]);
 
@@ -42,24 +40,10 @@ export class AuthService {
       )
   );
 
-  /**
-   * Computes the user's full name by concatenating the first name
-   * and, if available, the last name separated by a space.
-   * If the first name is not set, an empty string is used.
-   * If the last name is not set, only the first name is returned.
-   *
-   * @returns The computed full name as a string.
-   */
-  name = computed(() => {
-    const last = this.lastName();
-    return `${this.firstName() ?? ''}${last ? ` ${last}` : ''}`;
-  });
-
   private resetAuthState() {
     this.authenticated.set(false);
     this.userId.set(undefined);
-    this.firstName.set(undefined);
-    this.lastName.set(undefined);
+    this.username.set(undefined);
     this.roles.set([]);
     this.permissions.set([]);
   }
@@ -67,8 +51,7 @@ export class AuthService {
   private setUser(user: WhoAmI) {
     this.authenticated.set(true);
     this.userId.set(user.id);
-    this.firstName.set(user.firstName);
-    this.lastName.set(user.lastName);
+    this.username.set(user.username);
     this.roles.set(user.roles);
     this.permissions.set(user.permissions);
   }

@@ -19,6 +19,9 @@ import { appRouter } from './server/api/api.routes';
 import { createContext } from './server/api/trpc';
 import { whoAmIHandler } from './server/endpoints/who-am-i';
 import { cronJobs } from './server/cron/cron.jobs';
+import { initializeApp } from './server/services/initialize';
+import { loginHandler } from './server/endpoints/login';
+import { logoutHandler } from './server/endpoints/logout';
 
 const port = parseInt(process.env['PORT'] ?? '') || 4000;
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -30,6 +33,8 @@ const angularApp = new AngularNodeAppEngine();
 const app = Fastify({ logger: true });
 app.register(cookie);
 app.register(formbody);
+
+initializeApp();
 
 export type AppRouter = typeof appRouter;
 
@@ -63,6 +68,8 @@ app.register(fastifyTRPCPlugin, {
  * HTTP endpoints
  */
 app.get('/sys/who-am-i', whoAmIHandler);
+app.post('/sys/login', loginHandler);
+app.post('/sys/logout', logoutHandler);
 
 /**
  * Handle all other requests by rendering the Angular application.

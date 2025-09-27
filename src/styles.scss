@@ -1,5 +1,15 @@
 @use '@angular/material' as mat;
 
+:root {
+  --primary-background: #212121;
+  --secondary-background: #181818;
+  --accent-background: #303030;
+
+  --primary-color: #ffffff;
+  --secondary-color: #cccccc;
+  --accent-color: #424242;
+}
+
 *,
 *::before,
 *::after {
