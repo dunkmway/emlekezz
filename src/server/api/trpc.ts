@@ -2,14 +2,17 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import { Permission, Role, ROLE_PERMISSION_MAP } from '../../security';
 import { prisma } from '../../../prisma/client';
-import { authService } from '@fhss-web-team/backend-utils';
+import { authService } from '../services/auth';
 import superjson from 'superjson';
 
 export const createContext = async (opts: CreateFastifyContextOptions) => ({
   userId: await authService.handleTokens(opts.req, opts.res),
 });
 type Context = Awaited<ReturnType<typeof createContext>>;
-interface Meta { requiredPermissions: Permission[]; hasAll?: boolean }
+interface Meta {
+  requiredPermissions: Permission[];
+  hasAll?: boolean;
+}
 
 const t = initTRPC
   .context<Context>()
@@ -46,7 +49,7 @@ export const authenticatedProcedure = publicProcedure.use(
     };
 
     return next({ ctx: { user: typedUser, userId: user.id } });
-  },
+  }
 );
 
 /**
@@ -63,13 +66,13 @@ export const authorizedProcedure = authenticatedProcedure.use(
 
     const userPermissions = new Set(
       ctx.user.roles
-        .flatMap((role) => ROLE_PERMISSION_MAP[role])
-        .concat(ctx.user.permissions),
+        .flatMap(role => ROLE_PERMISSION_MAP[role])
+        .concat(ctx.user.permissions)
     );
 
     const strat = meta.hasAll ? 'every' : 'some';
-    const hasRequiredPermission = meta.requiredPermissions[strat]((p) =>
-      userPermissions.has(p),
+    const hasRequiredPermission = meta.requiredPermissions[strat](p =>
+      userPermissions.has(p)
     );
 
     if (!hasRequiredPermission) {
@@ -77,5 +80,5 @@ export const authorizedProcedure = authenticatedProcedure.use(
     }
 
     return next();
-  },
+  }
 );

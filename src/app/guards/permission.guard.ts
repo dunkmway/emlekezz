@@ -1,4 +1,6 @@
-import { permissionGuardFactory } from '@fhss-web-team/frontend-utils';
+import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
+import { inject } from '@angular/core';
 import { Permission } from '../../security';
 
 /**
@@ -23,7 +25,26 @@ import { Permission } from '../../security';
  * ];
  * ```
  *
- * @see permissionGuardFactory
  * @see Permission
  */
-export const permissionGuard = permissionGuardFactory<Permission>;
+export const permissionGuard: (
+  requiredPermissions: Permission[],
+  haveAll?: boolean
+) => CanActivateFn = (reqPerms, haveAll) => {
+  return async (_route, state) => {
+    const router = inject(Router);
+    const authService = inject(AuthService);
+
+    const user = await authService.whoAmI();
+    if (!user) {
+      authService.login(state.url);
+      return false;
+    }
+
+    const hasAccess = reqPerms[haveAll ? 'every' : 'some'](role =>
+      authService.effectivePermissions().has(role)
+    );
+
+    return hasAccess || new RedirectCommand(router.parseUrl('/forbidden'));
+  };
+};

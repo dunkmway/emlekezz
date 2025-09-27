@@ -17,16 +17,13 @@ import {
 } from '@trpc/server/adapters/fastify';
 import { appRouter } from './server/api/api.routes';
 import { createContext } from './server/api/trpc';
-import { whoAmIHandlerFactory, jwt } from '@fhss-web-team/backend-utils';
-import { prisma } from '../prisma/client';
-import { userService } from './server/services/user';
+import { whoAmIHandler } from './server/endpoints/who-am-i';
 import { cronJobs } from './server/cron/cron.jobs';
 
 const port = parseInt(process.env['PORT'] ?? '') || 4000;
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
-jwt.setPrisma(prisma);
 cronJobs.forEach(job => job.start());
 
 const angularApp = new AngularNodeAppEngine();
@@ -65,7 +62,7 @@ app.register(fastifyTRPCPlugin, {
 /**
  * HTTP endpoints
  */
-app.get('/sys/who-am-i', whoAmIHandlerFactory(userService));
+app.get('/sys/who-am-i', whoAmIHandler);
 
 /**
  * Handle all other requests by rendering the Angular application.
