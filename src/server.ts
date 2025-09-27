@@ -11,24 +11,15 @@ import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import formbody from '@fastify/formbody';
 import fastifyStatic from '@fastify/static';
-import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify';
+import {
+  fastifyTRPCPlugin,
+  FastifyTRPCPluginOptions,
+} from '@trpc/server/adapters/fastify';
 import { appRouter } from './server/api/api.routes';
 import { createContext } from './server/api/trpc';
-import {
-  heartbeatHandler,
-  readyHandlerFactory,
-  loginHandler,
-  proxyHandlerFactory,
-  whoAmIHandlerFactory,
-  logoutHandler,
-  ssoCallbackHandlerFactory,
-  dummyPluginFactory,
-  jwt,
-} from '@fhss-web-team/backend-utils';
-import { dummyFunctions } from './server/dummy/dummy.functions';
+import { whoAmIHandlerFactory, jwt } from '@fhss-web-team/backend-utils';
 import { prisma } from '../prisma/client';
 import { userService } from './server/services/user';
-import { DEFAULT_HOME_PAGES } from './security';
 import { cronJobs } from './server/cron/cron.jobs';
 
 const port = parseInt(process.env['PORT'] ?? '') || 4000;
@@ -74,20 +65,7 @@ app.register(fastifyTRPCPlugin, {
 /**
  * HTTP endpoints
  */
-app.get('/sys/heartbeat', heartbeatHandler);
-app.get('/sys/ready', readyHandlerFactory(prisma));
 app.get('/sys/who-am-i', whoAmIHandlerFactory(userService));
-app.get('/login', loginHandler);
-app.get('/logout', logoutHandler);
-app.get('/proxy', proxyHandlerFactory(userService, DEFAULT_HOME_PAGES));
-app.post('/SSO/assertion', ssoCallbackHandlerFactory(userService, DEFAULT_HOME_PAGES));
-
-/**
- * Dummy endpoints
- */
-if (['dev', 'staging'].includes(process.env['ENVIRONMENT'] ?? 'no')) {
-  app.register(dummyPluginFactory(dummyFunctions));
-}
 
 /**
  * Handle all other requests by rendering the Angular application.

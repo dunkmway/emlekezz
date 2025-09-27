@@ -1,13 +1,5 @@
 @use '@angular/material' as mat;
 
-html {
-  @include mat.theme(
-    (
-      typography: 'IBM Plex Sans',
-    )
-  );
-}
-
 *,
 *::before,
 *::after {
@@ -20,5 +12,5 @@ body {
 }
 body {
   margin: 0;
-  font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
 }
