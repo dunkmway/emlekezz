@@ -57,20 +57,14 @@ export class AuthService {
   }
 
   /**
-   * Redirects the user to the login page.
-   *
-   * @param nextUri - (Optional) The URI to redirect to after login.
+   * Logs the user out by resetting the authentication state and redirecting to the login page.
    */
-  login(nextUri?: string) {
-    window.location.href = `/login${nextUri ? `?next_uri=${nextUri}` : ''}`;
-  }
+  async logout() {
+    await fetch(location.origin + '/sys/logout', {
+      method: 'POST',
+    });
 
-  /**
-   * Logs the user out by resetting the authentication state and redirecting to the logout page.
-   */
-  logout() {
-    this.resetAuthState();
-    window.location.href = '/logout';
+    window.location.href = '/login';
   }
 
   /**

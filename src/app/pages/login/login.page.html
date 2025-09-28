@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Emlekezz</h1>
+  <div class="form-field">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      [(ngModel)]="username"
+      (keydown.enter)="login()"
+      (keydown)="error.set('')" />
+  </div>
+  <div class="form-field">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      [(ngModel)]="password"
+      (keydown.enter)="login()"
+      (keydown)="error.set('')" />
+  </div>
+  @if (error()) {
+  <p class="error">{{error()}}</p>
+  }
+  <button (click)="login()">Log In</button>
+</div>

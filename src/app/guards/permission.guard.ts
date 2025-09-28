@@ -37,14 +37,13 @@ export const permissionGuard: (
 
     const user = await authService.whoAmI();
     if (!user) {
-      authService.login(state.url);
-      return false;
+      return new RedirectCommand(router.parseUrl('/login'));
     }
 
     const hasAccess = reqPerms[haveAll ? 'every' : 'some'](role =>
       authService.effectivePermissions().has(role)
     );
 
-    return hasAccess || new RedirectCommand(router.parseUrl('/forbidden'));
+    return hasAccess || new RedirectCommand(router.parseUrl('/login'));
   };
 };
