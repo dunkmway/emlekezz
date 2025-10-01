@@ -11,3 +11,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Note {
+  id         String    @id @default(uuid())
+  storedDate DateTime?
+  title      String?
+  content    String?
+  chunks     Chunk[]
+}
+
+model Chunk {
+  id        String                @id @default(uuid())
+  note      Note                  @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId    String
+  content   String
+  embedding Unsupported("vector")
+}

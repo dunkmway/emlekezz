@@ -13,16 +13,16 @@ services:
     restart: always
     gpus: all
 
-  postgres:
-    image: postgres:16
-    container_name: postgres
+  pgvector:
+    image: pgvector/pgvector:pg18
+    container_name: pgvector
     restart: unless-stopped
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: PASSWORD_ONLY_FOR_DEVELOPMENT
       POSTGRES_DB: emlekezz
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgvector_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     networks:
@@ -39,11 +39,11 @@ services:
     volumes:
       - minio_data:/data
     ports:
-      - "9000:9000" # S3 API
-      - "9001:9001" # Web Console
+      - '9000:9000' # S3 API
+      - '9001:9001' # Web Console
     networks:
       - dev_network
-  
+
   # open-webui:
   #   image: ghcr.io/open-webui/open-webui:cuda
   #   container_name: open-webui
@@ -62,7 +62,7 @@ services:
   #   gpus: all
 
 volumes:
-  postgres_data:
+  pgvector_data:
   minio_data:
   ollama_data:
   # open_webui_data:
