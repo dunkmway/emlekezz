@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  height: 100vh;
+
+  > * {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  app-chat {
+    flex: 1;
+  }
+
+  app-note {
+    flex: 2;
+  }
+}

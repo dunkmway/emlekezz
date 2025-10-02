@@ -1,6 +1,2 @@
-@if(auth.authenticated()) {
-<p>Welcome {{auth.username()}}!</p>
-<button (click)="auth.logout()">Logout</button>
-} @else {
-<p>Not Authenticated</p>
-}
+<app-chat></app-chat>
+<app-note></app-note>

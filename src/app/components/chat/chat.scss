@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+:host {
+  background-color: var(--secondary-background);
+  color: var(--secondary-color);
+  padding: 1em;
+
+  > mat-form-field {
+    width: 100%;
+
+    @include mat.form-field-overrides(
+      (
+        outlined-container-shape: 1.25em,
+        // outlined-container-color: var(--accent-background),
+        outlined-input-text-color: var(--primary-color),
+        outlined-outline-width: 2px,
+        outlined-outline-color: var(--accent-color),
+        outlined-hover-outline-color: var(--accent-color),
+        outlined-focus-outline-color: var(--accent-color),
+      )
+    );
+  }
+}

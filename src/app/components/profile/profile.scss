@@ -1,0 +1,23 @@
+:host {
+  > button {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    background-color: transparent;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    color: var(--primary-color);
+
+    &:hover {
+      background-color: var(--accent-background);
+      cursor: pointer;
+    }
+
+    > p {
+      margin: 0;
+    }
+  }
+}
