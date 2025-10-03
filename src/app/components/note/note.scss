@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+textarea {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--primary-background);
+  color: var(--primary-color);
+  border: none;
+  outline: none;
+  padding: 10px;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  tab-size: 4;
+}
+
+markdown {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1em 1em;
+}

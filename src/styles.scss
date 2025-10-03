@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-@include mat.core();
 
 :root {
   --primary-background: #212121;
@@ -9,6 +8,8 @@
   --primary-color: #ffffff;
   --secondary-color: #cccccc;
   --accent-color: #424242;
+
+  --highlight-color: #005cbb;
 }
 
 *,
@@ -35,7 +36,7 @@ body {
 .profile-menu {
   @include mat.menu-overrides(
     (
-      container-color: var(--secondary-background),
+      container-color: var(--primary-background),
       item-label-text-color: var(--primary-color),
       item-hover-state-layer-color: var(--accent-background),
       item-focus-state-layer-color: var(--accent-background),

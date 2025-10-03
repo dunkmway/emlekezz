@@ -6,6 +6,7 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideTrpc } from './utils/trpc.client';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,5 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideTrpc(),
+    provideMarkdown(),
   ],
 };

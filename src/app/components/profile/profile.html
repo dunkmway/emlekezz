@@ -1,16 +1,16 @@
 <button [matMenuTriggerFor]="menu">
   <p>{{ auth.username() }}</p>
-  <mat-icon>menu</mat-icon>
+  <mat-icon>account_circle</mat-icon>
 </button>
-<mat-menu #menu="matMenu" class="profile-menu">
+<mat-menu #menu="matMenu" xPosition="before" class="profile-menu">
   <button mat-menu-item (click)="auth.logout()">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>
   </button>
   @if (auth.roles().includes('admin')) {
-    <button mat-menu-item>
-      <mat-icon>settings</mat-icon>
-      <span>Admin</span>
-    </button>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    <span>Admin</span>
+  </button>
   }
 </mat-menu>

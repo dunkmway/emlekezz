@@ -1,0 +1,12 @@
+<button
+  (click)="selectedTab.set(currentNoteTab)"
+  [class.selected]="selectedTab() === currentNoteTab">
+  <span>{{currentNoteTab.name}}</span>
+</button>
+@for (tab of tabs(); track tab.id) {
+<button (click)="selectedTab.set(tab)" [class.selected]="selectedTab() === tab">
+  <span>{{tab.name}}</span>
+  <mat-icon (click)="tabClosed($event, tab)">close_small</mat-icon>
+</button>
+}
+<div class="rest"></div>

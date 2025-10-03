@@ -1,1 +1,6 @@
-<p>note works!</p>
+<app-tabs [(tabs)]="tabs" [(selectedTab)]="selectedTab"></app-tabs>
+@if (selectedTab().id === currentNoteTab.id) {
+<textarea (keydown)="handleKeydown($event)"></textarea>
+} @else {
+<markdown [data]="selectedTab().content"></markdown>
+}
