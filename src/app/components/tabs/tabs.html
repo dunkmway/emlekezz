@@ -1,12 +1,15 @@
 <button
-  (click)="selectedTab.set(currentNoteTab)"
-  [class.selected]="selectedTab() === currentNoteTab">
-  <span>{{currentNoteTab.name}}</span>
+  (click)="selectedTabIndex.set(-1)"
+  [class.selected]="selectedTabIndex() === -1">
+  <span>New Note</span>
+  <mat-icon style="visibility: hidden">close_small</mat-icon>
 </button>
-@for (tab of tabs(); track tab.id) {
-<button (click)="selectedTab.set(tab)" [class.selected]="selectedTab() === tab">
+@for (tab of tabs(); track tab.id; let index = $index) {
+<button
+  (click)="selectedTabIndex.set(index)"
+  [class.selected]="selectedTabIndex() === index">
   <span>{{tab.name}}</span>
-  <mat-icon (click)="tabClosed($event, tab)">close_small</mat-icon>
+  <mat-icon (click)="tabClosed($event, index)">close_small</mat-icon>
 </button>
 }
 <div class="rest"></div>

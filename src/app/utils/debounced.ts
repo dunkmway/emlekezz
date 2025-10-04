@@ -1,15 +1,15 @@
-import { effect, signal, Signal } from "@angular/core";
+import { computed, effect, signal, Signal } from '@angular/core';
 
 export const debounced = <T>(inputSignal: Signal<T>, wait: number = 400) => {
   const debouncedSignal = signal<T>(inputSignal());
-  const setSignal = debounce((value) => debouncedSignal.set(value), wait);
+  const setSignal = debounce(value => debouncedSignal.set(value), wait);
 
   effect(() => {
-    setSignal(inputSignal())
-  })
+    setSignal(inputSignal());
+  });
 
-  return debouncedSignal;
-}
+  return debouncedSignal.asReadonly();
+};
 
 const debounce = (callback: (...args: any[]) => void, wait: number) => {
   let timeoutId: number | undefined;
@@ -19,4 +19,4 @@ const debounce = (callback: (...args: any[]) => void, wait: number) => {
       callback(...args);
     }, wait);
   };
-}
+};

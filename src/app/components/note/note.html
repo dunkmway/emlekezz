@@ -1,6 +1,8 @@
-<app-tabs [(tabs)]="tabs" [(selectedTab)]="selectedTab"></app-tabs>
-@if (selectedTab().id === currentNoteTab.id) {
-<textarea (keydown)="handleKeydown($event)"></textarea>
+<app-tabs [(tabs)]="tabs" [(selectedTabIndex)]="selectedTabIndex"></app-tabs>
+@if (selectedTabIndex() === -1) {
+<textarea
+  (keydown)="handleKeydown($event)"
+  [(ngModel)]="noteContent"></textarea>
 } @else {
-<markdown [data]="selectedTab().content"></markdown>
+<markdown [data]="tabs()[selectedTabIndex()].content"></markdown>
 }

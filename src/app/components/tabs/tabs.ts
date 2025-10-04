@@ -1,4 +1,4 @@
-import { Component, input, model, OnInit } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 export type TabOptions = {
@@ -6,12 +6,6 @@ export type TabOptions = {
   name: string;
   content: string;
 };
-
-export const currentNoteTab = {
-  id: 'CURRENT_NOTE',
-  name: 'Current Note',
-  content: 'NO_CONTENT',
-} as const;
 
 @Component({
   selector: 'app-tabs',
@@ -21,12 +15,16 @@ export const currentNoteTab = {
 })
 export class Tabs {
   readonly tabs = model.required<TabOptions[]>();
-  readonly selectedTab = model.required<TabOptions>();
+  readonly selectedTabIndex = model.required<number>();
 
-  protected readonly currentNoteTab = currentNoteTab;
-
-  protected tabClosed(event: MouseEvent, tab: TabOptions) {
+  protected tabClosed(event: MouseEvent, tabIndex: number) {
     event.stopPropagation();
-    this.tabs.set(this.tabs().filter(filterTab => filterTab !== tab));
+    if (this.selectedTabIndex() === this.tabs().length - 1) {
+      this.selectedTabIndex.update(index => index - 1);
+    }
+    this.tabs.update(tabs => {
+      tabs.splice(tabIndex, 1);
+      return tabs;
+    });
   }
 }

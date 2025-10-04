@@ -16,7 +16,7 @@ button {
   border-right: var(--border);
   border-top: var(--border);
   border-bottom: var(--border);
-  padding: 8px calc(8px + var(--icon-width) + var(--gap));
+  padding: 8px 8px 8px calc(8px + var(--icon-width) + var(--gap));
   background-color: var(--secondary-background);
   color: var(--secondary-color);
   font-size: 14px;
@@ -25,10 +25,6 @@ button {
   display: flex;
   align-items: center;
   gap: var(--gap);
-
-  &:has(mat-icon) {
-    padding: 8px 8px 8px calc(8px + var(--icon-width) + var(--gap));
-  }
 
   @include mat.icon-overrides(
     (

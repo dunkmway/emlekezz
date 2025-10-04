@@ -2,6 +2,13 @@
 
 Text embedded note taking application. No folders or tags. Just notes.
 
+## ToDo
+
+- add more keyboard shortcuts to the textarea
+  - add in the thing that this extension does for hyphens
+- fix the trpc resource triggering on load and again on the first update
+- figure out the minimum load time
+
 ## Features
 
 - [ ] Store all notes

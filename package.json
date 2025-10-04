@@ -62,5 +62,8 @@
     "typescript-eslint": "^8.44.1",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "prisma": {
+    "schema": "./prisma"
   }
 }

@@ -16,6 +16,7 @@ model User {
   ///////////////////
 
   // Additional fields can be added here:
+  Note Note[]
 }
 
 model JwtBlacklist {
