@@ -35,7 +35,7 @@ export const permissionGuard: (
     const router = inject(Router);
     const authService = inject(AuthService);
 
-    const user = await authService.whoAmI();
+    const user = await authService.ready();
     if (!user) {
       return new RedirectCommand(router.parseUrl('/login'));
     }

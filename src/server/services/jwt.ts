@@ -87,9 +87,13 @@ class JWT {
   async invalidate(token: string) {
     const payload = await this.verify(token);
     if (!payload) return; // Token is already invalid
-    await prisma.jwtBlacklist.create({
-      data: { id: payload.jti!, exp: new Date(1000 * payload.exp!) },
-    });
+    try {
+      await prisma.jwtBlacklist.create({
+        data: { id: payload.jti!, exp: new Date(1000 * payload.exp!) },
+      });
+    } catch (e) {
+      console.warn(e);
+    }
   }
 }
 

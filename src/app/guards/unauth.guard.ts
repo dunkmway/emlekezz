@@ -8,8 +8,8 @@ import { AuthService } from '../services/auth/auth.service';
 export const unAuthGuard: CanActivateFn = async (_route, _state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const usr = await authService.whoAmI();
-  if (usr) {
+  const user = await authService.ready();
+  if (user) {
     return new RedirectCommand(router.parseUrl('/'));
   }
   return true;
