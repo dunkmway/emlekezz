@@ -33,6 +33,77 @@ body {
   color: #b00020;
 }
 
+:root {
+  @include mat.dialog-overrides(
+    (
+      container-min-width: 400px,
+      container-color: var(--primary-background),
+      content-padding: 1em,
+      subhead-color: var(--primary-color),
+      supporting-text-color: var(--secondary-color),
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      background-color: var(--accent-background),
+      header-headline-color: var(--primary-color),
+      row-item-label-text-color: var(--secondary-color),
+      row-item-outline-color: var(--accent-color),
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 1.25em,
+      outlined-input-text-color: var(--primary-color),
+      outlined-outline-width: 2px,
+      outlined-outline-color: var(--accent-color),
+      outlined-hover-label-text-color: var(--accent-color),
+      outlined-focus-label-text-color: var(--primary-color),
+      outlined-hover-outline-color: var(--accent-color),
+      outlined-focus-outline-color: var(--accent-color),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      text-container-shape: 0.5em,
+      text-label-text-color: var(--highlight-color),
+      text-disabled-label-text-color: var(--accent-color),
+      tonal-container-shape: 0.5em,
+      tonal-container-color: var(--highlight-color),
+      tonal-label-text-color: var(--primary-color),
+      tonal-disabled-container-color: var(--accent-background),
+      tonal-disabled-label-text-color: var(--accent-color),
+    )
+  );
+
+  @include mat.select-overrides(
+    (
+      panel-background-color: var(--primary-background),
+      enabled-trigger-text-color: var(--primary-color),
+      focused-arrow-color: var(--primary-color),
+    )
+  );
+
+  @include mat.option-overrides(
+    (
+      label-text-color: var(--primary-color),
+      selected-state-label-text-color: var(--primary-color),
+      selected-state-layer-color: var(--accent-color),
+    )
+  );
+}
+
+.fullscreen {
+  @include mat.dialog-overrides(
+    (
+      container-min-width: 75vw,
+    )
+  );
+}
+
 .profile-menu {
   @include mat.menu-overrides(
     (

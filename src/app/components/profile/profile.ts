@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminSettings } from '../admin-settings/admin-settings';
 
 @Component({
   selector: 'app-profile',
@@ -11,5 +13,12 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile.scss',
 })
 export class Profile {
-  auth = inject(AuthService);
+  protected readonly auth = inject(AuthService);
+  protected readonly dialog = inject(MatDialog);
+
+  openAdminSettingsDialog() {
+    this.dialog.open(AdminSettings, {
+      panelClass: 'fullscreen',
+    });
+  }
 }

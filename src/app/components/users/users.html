@@ -1,0 +1,31 @@
+<h2>Users</h2>
+<button matButton="tonal" (click)="openNewUserDialog()">Add User</button>
+<table mat-table [dataSource]="getUsers.value() ?? []">
+  <!-- Username Column -->
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef>Username</th>
+    <td mat-cell *matCellDef="let user">{{user.username}}</td>
+  </ng-container>
+
+  <!-- Roles Column -->
+  <ng-container matColumnDef="roles">
+    <th mat-header-cell *matHeaderCellDef>Roles</th>
+    <td mat-cell *matCellDef="let user">{{user.roles.join(', ')}}</td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let user">
+      <button
+        matButton
+        (click)="deleteUser(user.id, user.username)"
+        [disabled]="user.id === auth.userId()">
+        Delete
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

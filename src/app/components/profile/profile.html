@@ -8,7 +8,7 @@
     <span>Logout</span>
   </button>
   @if (auth.roles().includes('admin')) {
-  <button mat-menu-item>
+  <button mat-menu-item (click)="openAdminSettingsDialog()">
     <mat-icon>settings</mat-icon>
     <span>Admin</span>
   </button>

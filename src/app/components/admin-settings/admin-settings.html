@@ -1,0 +1,14 @@
+<mat-dialog-content>
+  <div class="side">
+    <button matButton (click)="currentTab.set('Users')">Users</button>
+    <button matButton (click)="currentTab.set('Models')">Models</button>
+    <button matButton>Other</button>
+  </div>
+  <div class="main">
+    @switch (currentTab()) { @case ('Users') {
+    <app-users></app-users>
+    } @case ('Models') {
+    <app-models></app-models>
+    } }
+  </div>
+</mat-dialog-content>

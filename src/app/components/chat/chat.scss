@@ -15,17 +15,6 @@ mat-form-field {
   position: sticky;
   top: 0;
   background-color: transparent;
-
-  @include mat.form-field-overrides(
-    (
-      outlined-container-shape: 1.25em,
-      outlined-input-text-color: var(--primary-color),
-      outlined-outline-width: 2px,
-      outlined-outline-color: var(--accent-color),
-      outlined-hover-outline-color: var(--accent-color),
-      outlined-focus-outline-color: var(--accent-color),
-    )
-  );
 }
 
 .response {

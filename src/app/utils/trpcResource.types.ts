@@ -1,4 +1,4 @@
-import { Injector, ValueEqualityFn, WritableSignal } from "@angular/core";
+import { Injector, ValueEqualityFn, WritableSignal } from '@angular/core';
 
 export type ResolverDef = {
   input: any;
@@ -44,7 +44,7 @@ export type TrpcResourceOptions<TOutput> = {
    * A comparison function which defines equality for the response value.
    */
   equal?: ValueEqualityFn<NoInfer<TOutput | undefined>> | undefined;
-}
+};
 
 type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
@@ -53,8 +53,8 @@ type _TrpcResource<TDef extends ResolverDef> = {
    * Signal of the tRPC procedure output, when available.
    * This value will persist while the `trpcResource` is loading.
    */
-  value: WritableSignal<TDef["output"] | undefined>;
-  
+  value: WritableSignal<TDef['output'] | undefined>;
+
   /**
    * Signal of the tRPC procedure error, when available.
    */
@@ -70,12 +70,17 @@ type _TrpcResource<TDef extends ResolverDef> = {
    * @param abortSignal Optional abort signal to abort the procedure call.
    * @param keepLoadingThroughAbort Whether the `trpcResource` should maintain a loading state after an abort.
    * This is useful when another refresh is the cause of an abort so the resource appears to keep loading.
-   * @returns void
+   * @returns true if there was no error during the call
    */
-  refresh: (abortSignal?: AbortSignal, keepLoadingThroughAbort?: boolean) => Promise<void>;
-}
+  refresh: (
+    abortSignal?: AbortSignal,
+    keepLoadingThroughAbort?: boolean
+  ) => Promise<boolean>;
+};
 
 /**
  * Represents the reactive result of an tRPC request.
  */
-export type TrpcResource<TDef extends ResolverDef> = Expand<_TrpcResource<TDef>>;
+export type TrpcResource<TDef extends ResolverDef> = Expand<
+  _TrpcResource<TDef>
+>;

@@ -46,14 +46,14 @@ function trpcResource<TDef extends ResolverDef>(
   const refresh = async (
     abortSignal?: AbortSignal,
     keepLoadingThroughAbort: boolean = true
-  ) => {
+  ): Promise<boolean> => {
     // if we have the special case where the current input is undefined
     // then set everything to it's initial state
     if (currentInput() === undefined) {
       value.set(options?.initialValue ?? options?.defaultValue);
       error.set(undefined);
       isLoading.set(false);
-      return;
+      return true;
     }
 
     // Reset signals for a fresh request.
@@ -74,7 +74,7 @@ function trpcResource<TDef extends ResolverDef>(
         // if so then we just leave this refresh in an undefined state
         // else we error as usual
         if (err.cause?.name === 'AbortError' && keepLoadingThroughAbort) {
-          return;
+          return false;
         }
         error.set(err);
       } else {
@@ -87,6 +87,7 @@ function trpcResource<TDef extends ResolverDef>(
       value.set(options?.defaultValue);
     }
     isLoading.set(false);
+    return !error();
   };
 
   return {
