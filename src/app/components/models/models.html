@@ -1,1 +1,27 @@
-<p>models works!</p>
+<h2>Models</h2>
+<button matButton="tonal" (click)="openNewModelDialog()">Add Model</button>
+<table mat-table [dataSource]="getModels.value() ?? []">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let model">{{model}}</td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let model">
+      <button matButton (click)="deleteModel(model)">Remove</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="2">
+      <p>No models downloaded yet</p>
+      <button matButton (click)="openNewModelDialog()">Add Model</button>
+    </td>
+  </tr>
+</table>

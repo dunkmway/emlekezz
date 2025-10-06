@@ -1,0 +1,24 @@
+<h3 matDialogTitle>Pull Model</h3>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Model Name</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+  @if (isLoading()) {
+  <div class="progress">
+    @for (item of progress(); track item.status) {
+    <p>{{item.status}}</p>
+    @if (item.total) {
+    <mat-progress-bar
+      mode="determinate"
+      [value]="percentage(item.completed, item.total)" />
+    } }
+  </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton (click)="cancel()">Close</button>
+  <button matButton="tonal" (click)="pull()" [disabled]="isLoading()">
+    Pull
+  </button>
+</mat-dialog-actions>

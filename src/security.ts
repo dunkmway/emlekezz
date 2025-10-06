@@ -4,7 +4,7 @@
  * Maps each user role to an array of permissions granted to that role.
  */
 export const ROLE_PERMISSION_MAP: Record<Role, Permission[]> = {
-  admin: ['manage-users'],
+  admin: ['manage-users', 'manage-models'],
   user: [],
 };
 
@@ -26,7 +26,7 @@ export const DEFAULT_HOME_PAGES: Partial<Record<Role, string>> = {
 /**
  * The list of all access permissions, granting access to pages and resources.
  */
-export const PERMISSIONS = ['manage-users'] as const;
+export const PERMISSIONS = ['manage-users', 'manage-models'] as const;
 
 /**
  * The list of all access roles.

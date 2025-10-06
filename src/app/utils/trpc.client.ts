@@ -1,16 +1,18 @@
 import { inject, InjectionToken, PLATFORM_ID } from '@angular/core';
-import { createTRPCClient, httpLink } from '@trpc/client';
+import { createTRPCClient, httpBatchStreamLink, httpLink } from '@trpc/client';
 import SuperJSON from 'superjson';
 import type { AppRouter } from '../../server';
 import { isPlatformBrowser } from '@angular/common';
 
-export const TRPC_CLIENT = new InjectionToken<ReturnType<typeof getClient>>('TRPC_CLIENT');
+export const TRPC_CLIENT = new InjectionToken<ReturnType<typeof getClient>>(
+  'TRPC_CLIENT'
+);
 
 const getClient = () => {
   const isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   return createTRPCClient<AppRouter>({
     links: [
-      httpLink({
+      httpBatchStreamLink({
         url: `${isBrowser ? window.location.origin : 'server'}/api`,
         transformer: SuperJSON,
       }),
@@ -20,5 +22,5 @@ const getClient = () => {
 
 export const provideTrpc = () => ({
   provide: TRPC_CLIENT,
-  useFactory: getClient
-})
+  useFactory: getClient,
+});

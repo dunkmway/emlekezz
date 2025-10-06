@@ -1,0 +1,19 @@
+mat-form-field {
+  display: block;
+  margin-top: 0.5em !important;
+  width: 100%;
+}
+
+.progress {
+  background-color: var(--accent-background);
+  padding: 1em;
+  border-radius: 1em;
+
+  p {
+    margin: 0.5em 0em 0.25em;
+  }
+
+  p:first-child {
+    margin-top: 0;
+  }
+}

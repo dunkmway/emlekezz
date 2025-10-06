@@ -1,0 +1,22 @@
+h2 {
+  margin-left: 0.5em;
+}
+
+table {
+  margin-top: 1em;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mat-column-actions {
+  width: 0;
+}
+
+.mat-no-data-cell {
+  margin-inline: auto;
+  width: fit-content;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

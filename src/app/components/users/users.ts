@@ -20,10 +20,6 @@ export class Users {
   protected readonly auth = inject(AuthService);
   private readonly confirmation = inject(ConfirmationDialog);
 
-  debug = effect(() => {
-    console.log(this.auth.userId());
-  });
-
   protected readonly displayedColumns: string[] = [
     'username',
     'roles',
@@ -42,7 +38,6 @@ export class Users {
     });
 
     confirm.afterClosed().subscribe(async result => {
-      console.log(result);
       if (result) {
         await this.trpc.users.deleteUser.mutate({ id });
         await this.getUsers.refresh();
