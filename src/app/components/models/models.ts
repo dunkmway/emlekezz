@@ -17,7 +17,7 @@ export class Models {
   private readonly trpc = inject(TRPC_CLIENT);
   private readonly confirmation = inject(ConfirmationDialog);
   private readonly dialog = inject(MatDialog);
-  protected readonly displayedColumns: string[] = ['name', 'actions'];
+  protected readonly displayedColumns: string[] = ['name', 'size', 'actions'];
 
   getModels = trpcResource(this.trpc.models.getModels.mutate, () => null, {
     autoRefresh: true,
@@ -34,6 +34,33 @@ export class Models {
         await this.getModels.refresh();
       }
     });
+  }
+
+  formatBytes(bytes: number): string {
+    if (!Number.isFinite(bytes)) return String(bytes);
+
+    const sign = bytes < 0 ? '-' : '';
+    let n = Math.abs(bytes);
+
+    const base = 1000;
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    if (n < 1) return `${sign}0 B`;
+
+    const exponent = Math.min(
+      Math.floor(Math.log(n) / Math.log(base)),
+      units.length - 1
+    );
+
+    const value = n / Math.pow(base, exponent);
+
+    const formatter = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+      useGrouping: false,
+    });
+
+    return `${sign}${formatter.format(value)} ${units[exponent]}`;
   }
 
   openNewModelDialog() {
