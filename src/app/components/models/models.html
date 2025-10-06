@@ -17,7 +17,7 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let model">
-      <button matButton (click)="deleteModel(model)">Remove</button>
+      <button matButton (click)="deleteModel(model.name)">Remove</button>
     </td>
   </ng-container>
 
