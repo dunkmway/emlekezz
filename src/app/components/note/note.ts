@@ -9,6 +9,7 @@ import { trpcResource } from '../../utils/trpcResource';
 import { debounced } from '../../utils/debounced';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { markdownCommands } from './markdown';
 
 @Component({
   selector: 'app-note',
@@ -68,37 +69,10 @@ export class Note {
   }
 
   protected handleKeydown(event: KeyboardEvent) {
-    const key = event.key;
-    const target = event.target as HTMLInputElement;
-    const selectionStart = target.selectionStart!;
-    const selectionEnd = target.selectionEnd!;
+    this.noteContent.set(markdownCommands(event));
 
-    if (key === 'Tab') {
-      event.preventDefault();
-      target.value =
-        target.value.substring(0, selectionStart) +
-        '\t' +
-        target.value.substring(selectionEnd);
-      target.selectionStart = target.selectionEnd = selectionStart + 1;
-    } else if (key === 'b' && event.ctrlKey) {
-      event.preventDefault();
-      target.value =
-        target.value.substring(0, selectionStart) +
-        '**' +
-        target.value.substring(selectionStart, selectionEnd) +
-        '**' +
-        target.value.substring(selectionEnd);
-      target.selectionStart = target.selectionEnd = selectionStart + 2;
-    } else if (key === 'i' && event.ctrlKey) {
-      event.preventDefault();
-      target.value =
-        target.value.substring(0, selectionStart) +
-        '*' +
-        target.value.substring(selectionStart, selectionEnd) +
-        '*' +
-        target.value.substring(selectionEnd);
-      target.selectionStart = target.selectionEnd = selectionStart + 2;
-    } else if (key === 's' && event.ctrlKey) {
+    // save the note
+    if (event.key === 's' && event.ctrlKey) {
       event.preventDefault();
       this.saveNote();
     }
