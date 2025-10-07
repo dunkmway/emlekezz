@@ -8,6 +8,9 @@ Text embedded note taking application. No folders or tags. Just notes.
   - add in the thing that this extension does for hyphens
 - fix the trpc resource triggering on load and again on the first update
 - figure out the minimum load time
+- Better error handling on changing password, maybe look into [tRPC Error Formatting](https://trpc.io/docs/server/error-formatting)
+  - also see [Zod Formatting errors](https://zod.dev/error-formatting)
+- Allow for changing user role from admin users
 
 ## Features
 

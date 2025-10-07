@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { authorizedProcedure } from '../../trpc';
+import { authenticatedProcedure } from '../../trpc';
 import ollama from '../../../services/ollama';
 
 const getModelsInput = z.null();
@@ -11,8 +11,7 @@ const getModelsOutput = z.array(
   })
 );
 
-export const getModels = authorizedProcedure
-  .meta({ requiredPermissions: ['manage-models'] })
+export const getModels = authenticatedProcedure
   .input(getModelsInput)
   .output(getModelsOutput)
   .mutation(async opts => {

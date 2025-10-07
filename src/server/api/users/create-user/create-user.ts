@@ -8,7 +8,7 @@ import { rethrowKnownPrismaError } from '../../../utils/prisma';
 const createUserInput = z.object({
   role: z.literal(ROLES),
   username: z.string(),
-  password: z.string(),
+  password: z.string().min(6),
 });
 
 const createUserOutput = z.void();

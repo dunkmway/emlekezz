@@ -1,0 +1,22 @@
+.heading {
+  margin-left: 0.5em;
+}
+
+table {
+  margin-top: 1em;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mat-column-actions {
+  width: 200px;
+}
+
+.mat-no-data-cell {
+  margin-inline: auto;
+  width: fit-content;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

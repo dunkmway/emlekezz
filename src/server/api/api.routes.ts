@@ -1,3 +1,4 @@
+import { changePassword } from './user/change-password/change-password';
 import { removeModel } from './models/remove-model/remove-model';
 import { pullModel } from './models/pull-model/pull-model';
 import { getModels } from './models/get-models/get-models';
@@ -8,6 +9,9 @@ import { upgetNote } from './upget-note';
 import { router } from './trpc';
 
 export const appRouter = router({
+  user: {
+    changePassword,
+  },
   models: {
     removeModel,
     pullModel,
