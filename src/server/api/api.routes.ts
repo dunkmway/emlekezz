@@ -1,3 +1,4 @@
+import { adminRole } from './users/admin-role/admin-role';
 import { changePassword } from './user/change-password/change-password';
 import { removeModel } from './models/remove-model/remove-model';
 import { pullModel } from './models/pull-model/pull-model';
@@ -18,6 +19,7 @@ export const appRouter = router({
     getModels,
   },
   users: {
+    adminRole,
     deleteUser,
     createUser,
     getUsers,

@@ -1,14 +1,13 @@
 import { z } from 'zod/v4';
 import { prisma } from '../../../../../prisma/client';
 import { authorizedProcedure } from '../../trpc';
-import { ROLES } from '../../../../security';
 import { hash } from 'bcryptjs';
 import { rethrowKnownPrismaError } from '../../../utils/prisma';
 
 const createUserInput = z.object({
-  role: z.literal(ROLES),
-  username: z.string(),
-  password: z.string().min(6),
+  isAdmin: z.boolean(),
+  username: z.string().min(1),
+  password: z.string().min(1),
 });
 
 const createUserOutput = z.void();
@@ -22,7 +21,7 @@ export const createUser = authorizedProcedure
       await prisma.user.create({
         data: {
           username: opts.input.username,
-          roles: [opts.input.role],
+          roles: opts.input.isAdmin ? ['admin'] : undefined,
           passwordHash: await hash(opts.input.password, 10),
         },
       });

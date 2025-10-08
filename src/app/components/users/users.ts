@@ -45,6 +45,24 @@ export class Users {
     });
   }
 
+  changeUserRole(id: string, username: string, isAdmin: boolean) {
+    const confirm = this.confirmation.open({
+      action: isAdmin
+        ? `demote the user ${username} from being an admin`
+        : `promote the user ${username} to being an admin`,
+    });
+
+    confirm.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.trpc.users.adminRole.mutate({
+          userId: id,
+          makeAdmin: !isAdmin,
+        });
+        await this.getUsers.refresh();
+      }
+    });
+  }
+
   openNewUserDialog() {
     const dialogRef = this.dialog.open(NewUser);
 

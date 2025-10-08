@@ -7,10 +7,9 @@ Text embedded note taking application. No folders or tags. Just notes.
 - add more keyboard shortcuts to the textarea
   - add in the thing that this extension does for hyphens
 - fix the trpc resource triggering on load and again on the first update
-- figure out the minimum load time
+- figure out the minimum loading time (show saving changes for the note)
 - Better error handling on changing password, maybe look into [tRPC Error Formatting](https://trpc.io/docs/server/error-formatting)
   - also see [Zod Formatting errors](https://zod.dev/error-formatting)
-- Allow for changing user role from admin users
 
 ## Features
 

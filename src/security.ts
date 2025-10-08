@@ -5,7 +5,6 @@
  */
 export const ROLE_PERMISSION_MAP: Record<Role, Permission[]> = {
   admin: ['manage-users', 'manage-models'],
-  user: [],
 };
 
 /**
@@ -34,7 +33,7 @@ export const PERMISSIONS = ['manage-users', 'manage-models'] as const;
  * Roles are collections of permissions.
  * @see ROLE_PERMISSION_MAP
  */
-export const ROLES = ['admin', 'user'] as const;
+export const ROLES = ['admin'] as const;
 
 // -- TYPES --
 

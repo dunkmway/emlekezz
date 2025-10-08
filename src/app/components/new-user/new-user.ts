@@ -2,8 +2,7 @@ import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { Role, ROLES } from '../../../security';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
 import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { trpcResource } from '../../utils/trpcResource';
@@ -14,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     MatFormFieldModule,
     MatInput,
-    MatSelectModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatButton,
     FormsModule,
@@ -26,9 +25,7 @@ export class NewUser {
   private readonly trpc = inject(TRPC_CLIENT);
   readonly dialogRef = inject(MatDialogRef<NewUser>);
 
-  protected readonly roles = ROLES;
-
-  protected readonly role = signal<Role | null>(null);
+  protected readonly isAdmin = signal<boolean>(false);
   protected readonly username = signal<string>('');
   protected readonly password = signal<string>('');
   protected readonly error = linkedSignal(
@@ -36,7 +33,7 @@ export class NewUser {
   );
 
   createUser = trpcResource(this.trpc.users.createUser.mutate, () => ({
-    role: this.role() ?? 'user',
+    isAdmin: this.isAdmin(),
     username: this.username(),
     password: this.password(),
   }));
@@ -46,10 +43,9 @@ export class NewUser {
   }
 
   async save() {
-    const role = this.role();
     const username = this.username();
     const password = this.password();
-    if (!role || !username || !password) {
+    if (!username || !password) {
       this.error.set('Please fill in all fields');
       return;
     }

@@ -79,6 +79,14 @@ body {
     )
   );
 
+  @include mat.checkbox-overrides(
+    (
+      label-text-color: var(--primary-color),
+      unselected-hover-icon-color: var(--accent-color),
+      unselected-focus-icon-color: var(--accent-color),
+    )
+  );
+
   @include mat.select-overrides(
     (
       panel-background-color: var(--primary-background),

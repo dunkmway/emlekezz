@@ -1,14 +1,6 @@
 <h3 matDialogTitle>Add User</h3>
 <mat-dialog-content>
   <mat-form-field appearance="outline">
-    <mat-label>Role</mat-label>
-    <mat-select [(value)]="role" hideSingleSelectionIndicator>
-      @for (role of roles; track role) {
-      <mat-option [value]="role">{{role}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
     <mat-label>Username</mat-label>
     <input matInput [(ngModel)]="username" />
   </mat-form-field>
@@ -16,6 +8,7 @@
     <mat-label>Password</mat-label>
     <input matInput type="password" [(ngModel)]="password" />
   </mat-form-field>
+  <mat-checkbox [(ngModel)]="isAdmin">Admin</mat-checkbox>
   <p class="error">{{error()}}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
