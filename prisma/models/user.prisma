@@ -16,7 +16,9 @@ model User {
   ///////////////////
 
   // Additional fields can be added here:
-  Note Note[]
+  Note           Note[]
+  chatModel      String?
+  embeddingModel String?
 }
 
 model JwtBlacklist {

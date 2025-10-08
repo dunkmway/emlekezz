@@ -14,11 +14,25 @@ export class UserModels {
   private readonly trpc = inject(TRPC_CLIENT);
   protected readonly displayedColumns: string[] = ['name', 'actions'];
 
-  getModels = trpcResource(this.trpc.models.getModels.mutate, () => null, {
+  getModels = trpcResource(this.trpc.user.getUserModels.mutate, () => null, {
     autoRefresh: true,
   });
 
-  setChatModel(name: string) {}
+  async setChatModel(name: string) {
+    await this.trpc.user.setModel.mutate({
+      model: name,
+      type: 'chat',
+    });
 
-  setEmbeddingModel(name: string) {}
+    this.getModels.refresh();
+  }
+
+  async setEmbeddingModel(name: string) {
+    await this.trpc.user.setModel.mutate({
+      model: name,
+      type: 'embedding',
+    });
+
+    this.getModels.refresh();
+  }
 }

@@ -13,8 +13,14 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let model">
-      <button matButton (click)="setChatModel(model.name)">Chat</button>
-      <button matButton (click)="setEmbeddingModel(model.name)">
+      <button
+        [matButton]="model.isChat && 'tonal'"
+        (click)="setChatModel(model.name)">
+        Chat
+      </button>
+      <button
+        [matButton]="model.isEmbedding && 'tonal'"
+        (click)="setEmbeddingModel(model.name)">
         Embedding
       </button>
     </td>

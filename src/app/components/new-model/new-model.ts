@@ -33,7 +33,7 @@ export class NewModel {
 
   percentage(part: number | undefined, whole: number | undefined) {
     if (part === undefined || whole === undefined) {
-      return 100;
+      return 0;
     }
     return Math.floor((100 * part) / whole);
   }

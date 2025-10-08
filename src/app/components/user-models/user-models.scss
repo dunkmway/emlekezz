@@ -9,7 +9,12 @@ table {
 }
 
 .mat-column-actions {
-  width: 200px;
+  width: 250px;
+  text-align: end;
+
+  button:not(:last-child) {
+    margin-right: 0.5em;
+  }
 }
 
 .mat-no-data-cell {
