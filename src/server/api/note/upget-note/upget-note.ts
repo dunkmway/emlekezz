@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
-import { prisma } from '../../../prisma/client';
-import { authenticatedProcedure } from './trpc';
+import { prisma } from '../../../../../prisma/client';
+import { authenticatedProcedure } from './../../trpc';
 
 const upgetNoteInput = z.object({
   content: z.string().nullish(),

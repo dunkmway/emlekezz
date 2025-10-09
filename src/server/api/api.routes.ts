@@ -1,3 +1,4 @@
+import { saveNote } from './note/save-note/save-note';
 import { searchNotes } from './chat/search-notes/search-notes';
 import { getUserModels } from './user/get-user-models/get-user-models';
 import { setModel } from './user/set-model/set-model';
@@ -9,10 +10,14 @@ import { getModels } from './models/get-models/get-models';
 import { deleteUser } from './users/delete-user/delete-user';
 import { createUser } from './users/create-user/create-user';
 import { getUsers } from './users/get-users/get-users';
-import { upgetNote } from './upget-note';
+import { upgetNote } from './note/upget-note/upget-note';
 import { router } from './trpc';
 
 export const appRouter = router({
+  note: {
+    saveNote,
+    upgetNote,
+  },
   chat: {
     searchNotes,
   },
@@ -32,5 +37,4 @@ export const appRouter = router({
     createUser,
     getUsers,
   },
-  upgetNote,
 });

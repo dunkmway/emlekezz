@@ -55,7 +55,7 @@ export class Note {
   protected readonly debouncedContent = debounced(this.noteContent, 5_000);
 
   protected readonly draft = trpcResource(
-    this.trpc.upgetNote.mutate,
+    this.trpc.note.upgetNote.mutate,
     () => ({ content: this.debouncedContent() }),
     { autoRefresh: true }
   );
@@ -68,9 +68,13 @@ export class Note {
   });
 
   private saveNote() {
-    this.snackBar.open('Note saved', 'Dismiss', {
-      duration: 3000,
-    });
+    const content = this.noteContent();
+    if (content && content.trim() !== '') {
+      this.trpc.note.saveNote.mutate(null);
+      this.snackBar.open('Note saved', 'Dismiss', {
+        duration: 3000,
+      });
+    }
   }
 
   protected handleKeydown(event: KeyboardEvent) {
