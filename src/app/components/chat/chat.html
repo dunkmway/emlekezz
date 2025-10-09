@@ -11,9 +11,11 @@
 <div class="response">
   @if (isLoading()) {
   <p>Thinking...</p>
+  } @else { @if (error()) {
+  <p class="error">{{error()}}</p>
   } @else {
   <markdown [data]="response()"></markdown>
-  }
+  } }
 </div>
 <div class="footer">
   <app-profile></app-profile>
