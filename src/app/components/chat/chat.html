@@ -4,79 +4,16 @@
     cdkTextareaAutosize
     cdkAutosizeMinRows="1"
     cdkAutosizeMaxRows="5"
-    placeholder="Search your notes"></textarea>
+    placeholder="Search your notes"
+    [(ngModel)]="searchQuery"
+    (keydown.enter)="searchNotes($event)"></textarea>
 </mat-form-field>
 <div class="response">
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex nisi tempore
-    architecto beatae ipsam odio perferendis adipisci, sit culpa in, obcaecati
-    laboriosam maiores commodi ducimus ab ea perspiciatis! Fuga, at?
-  </p>
+  @if (isLoading()) {
+  <p>Thinking...</p>
+  } @else {
+  <markdown [data]="response()"></markdown>
+  }
 </div>
 <div class="footer">
   <app-profile></app-profile>

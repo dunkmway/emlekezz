@@ -29,6 +29,11 @@ body {
   color: var(--primary-color);
 }
 
+a {
+  text-decoration: none;
+  color: var(--highlight-color);
+}
+
 .error {
   color: #b00020;
 }
@@ -121,4 +126,39 @@ body {
       item-focus-state-layer-color: var(--accent-background),
     )
   );
+}
+
+markdown {
+  --table-border-color: var(--accent-color);
+  --table-header-bg: var(--accent-background);
+  --table-text-color: var(--primary-color);
+
+  > *:first-child {
+    margin-top: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--table-border-color);
+    color: var(--table-text-color);
+  }
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--table-border-color);
+  }
+
+  th {
+    background-color: var(--table-header-bg);
+    font-weight: 600;
+  }
+
+  caption {
+    caption-side: top;
+    font-weight: bold;
+    padding: 0.5rem;
+    text-align: left;
+  }
 }

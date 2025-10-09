@@ -24,5 +24,9 @@ textarea {
 markdown {
   flex: 1;
   overflow-y: auto;
-  padding: 0 1em 1em;
+  padding: 1em;
+
+  > *:first-child {
+    margin-top: 0;
+  }
 }

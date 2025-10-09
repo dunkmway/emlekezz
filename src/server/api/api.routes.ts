@@ -1,3 +1,4 @@
+import { searchNotes } from './chat/search-notes/search-notes';
 import { getUserModels } from './user/get-user-models/get-user-models';
 import { setModel } from './user/set-model/set-model';
 import { adminRole } from './users/admin-role/admin-role';
@@ -12,6 +13,9 @@ import { upgetNote } from './upget-note';
 import { router } from './trpc';
 
 export const appRouter = router({
+  chat: {
+    searchNotes,
+  },
   user: {
     getUserModels,
     setModel,
