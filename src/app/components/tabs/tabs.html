@@ -1,3 +1,6 @@
+<button class="sidenav" (click)="drawerOpen.emit()">
+  <mat-icon>notes</mat-icon>
+</button>
 <button
   (click)="selectedTabIndex.set(-1)"
   [class.selected]="selectedTabIndex() === -1">
@@ -8,7 +11,7 @@
 <button
   (click)="selectedTabIndex.set(index)"
   [class.selected]="selectedTabIndex() === index">
-  <span>{{tab.name}}</span>
+  <span>{{tab.title ?? 'Mystery Note'}}</span>
   <mat-icon (click)="tabClosed($event, index)">close_small</mat-icon>
 </button>
 }

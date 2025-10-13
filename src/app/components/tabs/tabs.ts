@@ -1,10 +1,10 @@
-import { Component, model } from '@angular/core';
+import { Component, model, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 export type TabOptions = {
   id: string;
-  name: string;
-  content: string;
+  title: string | null;
+  content: string | null;
 };
 
 @Component({
@@ -16,6 +16,8 @@ export type TabOptions = {
 export class Tabs {
   readonly tabs = model.required<TabOptions[]>();
   readonly selectedTabIndex = model.required<number>();
+
+  readonly drawerOpen = output();
 
   protected tabClosed(event: MouseEvent, tabIndex: number) {
     event.stopPropagation();

@@ -1,4 +1,7 @@
-<app-tabs [(tabs)]="tabs" [(selectedTabIndex)]="selectedTabIndex"></app-tabs>
+<app-tabs
+  [(tabs)]="tabs"
+  [(selectedTabIndex)]="selectedTabIndex"
+  (drawerOpen)="drawerOpen.emit()"></app-tabs>
 @if (selectedTabIndex() === -1) {
 <textarea
   (keydown)="handleKeydown($event)"

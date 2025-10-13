@@ -2,11 +2,9 @@ import { Component, inject, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { Profile } from '../profile/profile';
 import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { FormsModule } from '@angular/forms';
 import { MarkdownComponent } from 'ngx-markdown';
-import { TRPCClientError } from '@trpc/client';
 
 @Component({
   selector: 'app-chat',
@@ -14,7 +12,6 @@ import { TRPCClientError } from '@trpc/client';
     MatFormFieldModule,
     MatInputModule,
     TextFieldModule,
-    Profile,
     FormsModule,
     MarkdownComponent,
   ],

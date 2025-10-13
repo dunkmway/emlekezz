@@ -1,0 +1,8 @@
+<div class="container" (scroll)="onScroll($event)">
+  @for (note of allNotes(); track note.id) {
+  <button matButton (click)="noteClick.emit(note.id)">{{note.title}}</button>
+  }
+</div>
+<div class="footer">
+  <app-profile></app-profile>
+</div>

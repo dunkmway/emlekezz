@@ -39,6 +39,15 @@ a {
 }
 
 :root {
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--secondary-background),
+      container-text-color: var(--secondary-color),
+      container-shape: 0,
+      container-width: 300px,
+    )
+  );
+
   @include mat.dialog-overrides(
     (
       container-min-width: 400px,

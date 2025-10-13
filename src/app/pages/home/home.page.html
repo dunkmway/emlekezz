@@ -1,2 +1,9 @@
-<app-note></app-note>
-<app-chat></app-chat>
+<mat-drawer-container>
+  <mat-drawer #drawer mode="push">
+    <app-menu (noteClick)="noteClicked($event)"></app-menu>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-note (drawerOpen)="drawer.toggle()"></app-note>
+    <app-chat></app-chat>
+  </mat-drawer-content>
+</mat-drawer-container>

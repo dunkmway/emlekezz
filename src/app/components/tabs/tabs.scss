@@ -11,9 +11,26 @@
   overflow-x: auto;
 }
 
-button {
+.sidenav {
   border: none;
-  border-right: var(--border);
+  border-radius: 0;
+  background-color: var(--secondary-background);
+  width: 42px;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  cursor: pointer;
+  border-bottom: var(--border);
+
+  @include mat.icon-overrides(
+    (
+      color: var(--secondary-color),
+    )
+  );
+}
+
+button:not(.sidenav) {
+  border: none;
+  border-left: var(--border);
   border-top: var(--border);
   border-bottom: var(--border);
   padding: 8px 8px 8px calc(8px + var(--icon-width) + var(--gap));
@@ -25,6 +42,10 @@ button {
   display: flex;
   align-items: center;
   gap: var(--gap);
+
+  &:last-of-type {
+    border-right: var(--border);
+  }
 
   @include mat.icon-overrides(
     (

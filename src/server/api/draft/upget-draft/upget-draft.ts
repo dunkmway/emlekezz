@@ -1,18 +1,18 @@
 import { z } from 'zod/v4';
 import { prisma } from '../../../../../prisma/client';
-import { authenticatedProcedure } from './../../trpc';
+import { authenticatedProcedure } from '../../trpc';
 
-const upgetNoteInput = z.object({
+const upgetDraftInput = z.object({
   content: z.string().nullish(),
 });
 
-const upgetNoteOutput = z.object({
+const upgetDraftOutput = z.object({
   content: z.string().nullable(),
 });
 
-export const upgetNote = authenticatedProcedure
-  .input(upgetNoteInput)
-  .output(upgetNoteOutput)
+export const upgetDraft = authenticatedProcedure
+  .input(upgetDraftInput)
+  .output(upgetDraftOutput)
   .mutation(async opts => {
     const possible = await prisma.note.findFirst({
       where: { storedDate: null, userId: opts.ctx.userId },

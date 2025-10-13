@@ -4,11 +4,11 @@ import { vi, describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { faker } from '@faker-js/faker';
 import { prisma, User } from '../../../../../prisma/client';
 
-describe('Save note', () => {
+describe('Get user note', () => {
   let requestingUser: User;
-  let saveNote: ReturnType<
+  let getUserNote: ReturnType<
     typeof appRouter.createCaller
-  >['note']['saveNote'];
+  >['user']['getUserNote'];
 
   beforeAll(async () => {
     requestingUser = await prisma.user.create({
@@ -16,10 +16,10 @@ describe('Save note', () => {
         permissions: [],
       }),
     });
-    saveNote = appRouter
+    getUserNote = appRouter
       .createCaller({ userId: requestingUser.id })
-      .note
-      .saveNote;
+      .user
+      .getUserNote;
   });
 
   afterAll(async () => {

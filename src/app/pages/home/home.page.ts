@@ -1,16 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
-import { TRPC_CLIENT } from '../../utils/trpc.client';
+import { Component, effect, viewChild } from '@angular/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { Chat } from '../../components/chat/chat';
 import { Note } from '../../components/note/note';
+import { Menu } from '../../components/menu/menu';
 
 @Component({
   selector: 'app-home',
-  imports: [Chat, Note],
+  imports: [Chat, Note, Menu, MatSidenavModule],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
 export class HomePage {
-  trpc = inject(TRPC_CLIENT);
+  private readonly noteComponent = viewChild(Note);
 
-  contentValue = signal<string | null | undefined>(undefined);
+  noteClicked(id: string) {
+    this.noteComponent()?.addNoteTab(id);
+  }
 }

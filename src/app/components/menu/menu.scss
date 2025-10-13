@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  @include mat.button-overrides(
+    (
+      text-label-text-color: var(--primary-color),
+      text-state-layer-color: var(--primary-color),
+      text-ripple-color: var(--accent-background),
+    )
+  );
+}
+
+.container {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: scroll;
+}
+
+button {
+  width: 100%;
+  justify-content: start;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+  padding: 8px;
+  border-top: 1px solid var(--accent-color);
+}
