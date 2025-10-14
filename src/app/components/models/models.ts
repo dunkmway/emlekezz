@@ -6,10 +6,11 @@ import { trpcResource } from '../../utils/trpcResource';
 import { MatDialog } from '@angular/material/dialog';
 import { NewModel } from '../new-model/new-model';
 import { ConfirmationDialog } from '../confirmation/confirmation.dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-models',
-  imports: [MatTableModule, MatButton],
+  imports: [MatTableModule, MatButton, MatTooltipModule],
   templateUrl: './models.html',
   styleUrl: './models.scss',
 })
@@ -19,9 +20,13 @@ export class Models {
   private readonly dialog = inject(MatDialog);
   protected readonly displayedColumns: string[] = ['name', 'size', 'actions'];
 
-  getModels = trpcResource(this.trpc.models.getModels.mutate, () => null, {
-    autoRefresh: true,
-  });
+  protected readonly getModels = trpcResource(
+    this.trpc.models.getModels.mutate,
+    () => null,
+    {
+      autoRefresh: true,
+    }
+  );
 
   deleteModel(name: string) {
     const confirm = this.confirmation.open({
@@ -30,8 +35,12 @@ export class Models {
 
     confirm.afterClosed().subscribe(async result => {
       if (result) {
-        await this.trpc.models.removeModel.mutate(name);
-        await this.getModels.refresh();
+        try {
+          await this.trpc.models.removeModel.mutate(name);
+          await this.getModels.refresh();
+        } catch (e) {
+          console.error(e);
+        }
       }
     });
   }

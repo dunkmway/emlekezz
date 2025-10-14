@@ -18,7 +18,11 @@ export const setModel = authenticatedProcedure
       data: {
         chatModel: opts.input.type === 'chat' ? opts.input.model : undefined,
         embeddingModel:
-          opts.input.type === 'embedding' ? opts.input.model : undefined,
+          opts.input.type === 'embedding'
+            ? opts.ctx.user.embeddingModel === null
+              ? opts.input.model
+              : undefined
+            : undefined,
       },
     });
   });

@@ -16,8 +16,17 @@
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let model">
-      <button matButton (click)="deleteModel(model.name)">Remove</button>
+    <td
+      mat-cell
+      *matCellDef="let model"
+      matTooltip="This model is used by a user for embeddings. It cannot be removed."
+      [matTooltipDisabled]="!model.usedForEmbeddings">
+      <button
+        matButton
+        (click)="deleteModel(model.name)"
+        [disabled]="model.usedForEmbeddings">
+        Remove
+      </button>
     </td>
   </ng-container>
 

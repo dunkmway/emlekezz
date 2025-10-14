@@ -20,7 +20,8 @@
       </button>
       <button
         [matButton]="model.isEmbedding && 'tonal'"
-        (click)="setEmbeddingModel(model.name)">
+        (click)="setEmbeddingModel(model.name)"
+        [disabled]="embeddedChosen()">
         Embedding
       </button>
     </td>

@@ -2,6 +2,7 @@ import { z } from 'zod/v4';
 import { authorizedProcedure } from '../../trpc';
 import ollama from '../../../services/ollama';
 import { prisma } from '../../../../../prisma/client';
+import { TRPCError } from '@trpc/server';
 
 const removeModelInput = z.string();
 
@@ -12,6 +13,20 @@ export const removeModel = authorizedProcedure
   .input(removeModelInput)
   .output(removeModelOutput)
   .mutation(async opts => {
+    const modelUseCount = await prisma.user.count({
+      where: {
+        embeddingModel: opts.input,
+      },
+    });
+
+    if (modelUseCount > 0) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message:
+          'Cannot remove model that is used for embeddings by at least one user.',
+      });
+    }
+
     // remove the model
     await ollama.delete({
       model: opts.input,
