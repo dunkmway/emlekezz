@@ -10,15 +10,18 @@ import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { trpcResource } from '../../utils/trpcResource';
 import { MatButton } from '@angular/material/button';
 import { Profile } from '../profile/profile';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmationDialog } from '../confirmation/confirmation.dialog';
 
 @Component({
   selector: 'app-menu',
-  imports: [MatButton, Profile],
+  imports: [MatButton, Profile, MatIconModule],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
 export class Menu {
   private readonly trpc = inject(TRPC_CLIENT);
+  private readonly confirmation = inject(ConfirmationDialog);
   private readonly page = signal(0);
 
   noteClick = output<string>();
@@ -59,5 +62,26 @@ export class Menu {
       this.page.update(prev => prev++);
       this.getNotes.refresh();
     }
+  }
+
+  protected deleteNote(event: MouseEvent, id: string) {
+    event.stopPropagation();
+    this.confirmation
+      .open({
+        action: 'delete this note',
+      })
+      .afterClosed()
+      .subscribe(async result => {
+        if (result) {
+          await this.trpc.user.deleteNote.mutate({ id });
+          this.allNotes.update(notes => {
+            notes?.splice(
+              notes.findIndex(note => note.id),
+              1
+            );
+            return notes;
+          });
+        }
+      });
   }
 }

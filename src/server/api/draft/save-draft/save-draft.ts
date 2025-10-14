@@ -44,7 +44,11 @@ export const saveDraft = authenticatedProcedure
     }
 
     console.log('[GENERATING EMBEDDINGS]');
-    const embeddedChunks = await generateEmbeddings(content, embeddingModel);
+    const embeddedChunks = await generateEmbeddings(
+      content,
+      embeddingModel,
+      note.id
+    );
     console.log('[EMBEDDINGS GENERATED]', embeddedChunks.length);
 
     console.log('[GENERATING TITLE]');
@@ -66,11 +70,35 @@ export const saveDraft = authenticatedProcedure
 
       await tx.chunk.deleteMany({ where: { noteId: note.id } });
 
-      for (const chunk of embeddedChunks) {
-        await tx.$executeRaw`
-          INSERT INTO "Chunk" ("id", "noteId", "content", "embedding")
-          VALUES (${chunk.id}, ${note.id}, ${chunk.content}, ${Prisma.raw(`'${chunk.vector}'::vector`)})
-        `;
+      if (embeddedChunks.length === 0) {
+        return;
       }
+
+      const values = embeddedChunks.map(chunk => {
+        if (!Array.isArray(chunk.vector) || chunk.vector.length === 0) {
+          throw new Error('Embedding vector missing for chunk');
+        }
+
+        if (chunk.vector.some(v => !Number.isFinite(v))) {
+          throw new Error('Embedding vector contains non-finite values');
+        }
+
+        const vectorLiteral = `[${chunk.vector.join(',')}]`;
+
+        return Prisma.sql`
+          (${chunk.id}, ${note.id}, ${chunk.chunkIndex}, ${chunk.content}, ${Prisma.raw(`'${vectorLiteral}'::vector`)})
+        `;
+      });
+
+      await tx.$executeRaw`
+        INSERT INTO "Chunk" (
+          "id",
+          "noteId",
+          "chunkIndex",
+          "content",
+          "embedding"
+        )
+        VALUES ${Prisma.join(values)}
+      `;
     });
   });

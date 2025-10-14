@@ -4,6 +4,6 @@
   </mat-drawer>
   <mat-drawer-content>
     <app-note (drawerOpen)="drawer.toggle()"></app-note>
-    <app-chat></app-chat>
+    <app-chat (noteClick)="noteClicked($event)"></app-chat>
   </mat-drawer-content>
 </mat-drawer-container>

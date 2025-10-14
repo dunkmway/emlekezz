@@ -25,4 +25,25 @@ mat-form-field {
   > p:first-child {
     margin-top: 0;
   }
+
+  .references {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &__label {
+      font-weight: 600;
+    }
+
+    &__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      mat-chip {
+        cursor: pointer;
+      }
+    }
+  }
 }

@@ -23,9 +23,15 @@ model Note {
 }
 
 model Chunk {
-  id        String                @id @default(uuid())
-  note      Note                  @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  noteId    String
-  content   String
-  embedding Unsupported("vector")
+  id         String                @id @default(uuid())
+  note       Note                  @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId     String
+  chunkIndex Int                   @default(0)
+  section    String?
+  startChar  Int                   @default(0)
+  endChar    Int                   @default(0)
+  content    String
+  embedding  Unsupported("vector")
+
+  @@unique([noteId, chunkIndex])
 }

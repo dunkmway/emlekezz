@@ -7,6 +7,41 @@ import { TRPCError } from '@trpc/server';
 const searchNotesInput = z.string();
 const chunkLimit = 8;
 
+type RawChunkRow = {
+  id: string;
+  noteId: string;
+  chunkIndex: number;
+  section: string | null;
+  startChar: number;
+  endChar: number;
+  content: string;
+  title: string | null;
+  storedDate: Date | null;
+  distance: number;
+};
+
+type NoteReference = {
+  noteId: string;
+  index: number;
+  title: string;
+  storedDate: string | null;
+};
+
+type ChatStreamChunk = {
+  message?: { content?: string };
+  done?: boolean;
+  [key: string]: unknown;
+};
+
+type SearchNotesStreamItem =
+  | { type: 'references'; references: NoteReference[] }
+  | (ChatStreamChunk & { type: 'data' });
+
+function formatDateForModel(date: Date | null): string | null {
+  if (!date) return null;
+  return date.toISOString().split('T')[0] ?? null;
+}
+
 export const searchNotes = authenticatedProcedure
   .input(searchNotesInput)
   .query(async opts => {
@@ -31,8 +66,7 @@ export const searchNotes = authenticatedProcedure
       prompt: opts.input,
     });
 
-    const promptEmbedding =
-      embeddedPrompt.embedding ?? embeddedPrompt.embedding ?? null;
+    const promptEmbedding = embeddedPrompt.embedding ?? null;
 
     if (!Array.isArray(promptEmbedding) || promptEmbedding.length === 0) {
       throw new TRPCError({
@@ -44,35 +78,108 @@ export const searchNotes = authenticatedProcedure
     const promptVectorLiteral = `[${promptEmbedding.join(',')}]`;
     const vector = Prisma.raw(`'${promptVectorLiteral}'::vector`);
 
-    const chunks = await prisma.$queryRaw<
-      Array<{ id: string; noteId: string; content: string }>
-    >(Prisma.sql`
+    const rows = await prisma.$queryRaw<RawChunkRow[]>(Prisma.sql`
       SELECT
         c."id",
         c."noteId",
-        c."content"
+        c."chunkIndex",
+        c."content",
+        n."title",
+        n."storedDate",
+        c.embedding <-> ${vector} AS "distance"
       FROM "Chunk" AS c
       INNER JOIN "Note" AS n ON n."id" = c."noteId"
       WHERE n."userId" = ${opts.ctx.userId}
-      ORDER BY c.embedding <-> ${vector}
+      ORDER BY c.embedding <-> ${vector}, n."storedDate" DESC NULLS LAST
       LIMIT ${Prisma.raw(chunkLimit.toString())}
     `);
 
-    const context = chunks.length
-      ? chunks
-          .map((chunk, index) => `Note Chunk ${index + 1}:\n${chunk.content}`)
+    const noteGroups = new Map<
+      string,
+      {
+        noteId: string;
+        title: string | null;
+        storedDate: Date | null;
+        closestDistance: number;
+        chunks: RawChunkRow[];
+      }
+    >();
+
+    for (const row of rows) {
+      const group = noteGroups.get(row.noteId);
+      if (!group) {
+        noteGroups.set(row.noteId, {
+          noteId: row.noteId,
+          title: row.title,
+          storedDate: row.storedDate,
+          closestDistance: row.distance,
+          chunks: [row],
+        });
+        continue;
+      }
+
+      group.chunks.push(row);
+      group.closestDistance = Math.min(group.closestDistance, row.distance);
+      if (!group.title && row.title) {
+        group.title = row.title;
+      }
+      if (!group.storedDate && row.storedDate) {
+        group.storedDate = row.storedDate;
+      }
+    }
+
+    const sortedGroups = Array.from(noteGroups.values()).sort((a, b) => {
+      const aTime = a.storedDate?.getTime() ?? 0;
+      const bTime = b.storedDate?.getTime() ?? 0;
+      if (aTime !== bTime) {
+        return bTime - aTime;
+      }
+      return a.closestDistance - b.closestDistance;
+    });
+
+    const references: NoteReference[] = sortedGroups.map((group, index) => ({
+      noteId: group.noteId,
+      index: index + 1,
+      title: group.title?.trim() || 'Untitled note',
+      storedDate: group.storedDate ? group.storedDate.toISOString() : null,
+    }));
+
+    const context = sortedGroups.length
+      ? sortedGroups
+          .map((group, idx) => {
+            const savedDate = formatDateForModel(group.storedDate);
+            const header = `[N${idx + 1}] ${group.title?.trim() || 'Untitled note'}${
+              savedDate ? ` (saved ${savedDate})` : ''
+            }`;
+
+            const chunkDescriptions = group.chunks
+              .sort((a, b) => a.chunkIndex - b.chunkIndex)
+              .map(chunk => {
+                return `Chunk ${chunk.chunkIndex + 1}:\n${chunk.content}`;
+              })
+              .join('\n\n');
+
+            return [header, chunkDescriptions].filter(Boolean).join('\n\n');
+          })
           .join('\n\n')
       : 'No related notes were found for this question.';
 
-    return await ollama.chat({
+    const systemContent = [
+      "You are an AI assistant that answers using the user's personal notes as the primary knowledge source.",
+      'Notes are referenced with labels like [N1] and include the date they were saved. Prefer newer notes when they conflict with older ones.',
+      'Cite the relevant note labels (e.g., [N1]) whenever you rely on their information.',
+      'If the notes do not contain the answer, acknowledge that and use general knowledge to help answer the question without making up facts.',
+      'Keep formatting clear and structured so the user can skim the result.',
+    ].join('\n');
+
+    console.log(context);
+
+    const chatStream = await ollama.chat({
       model: chatModel,
       messages: [
         {
           role: 'system',
-          content: `
-            You are an AI assistant designed to answer questions using the user's personal notes as your primary knowledge source.
-            Sometimes the context will be "No related notes were found for this question", in this case you should decide if the question for the user can be answered in general without any specific notes,
-            essentially acting like a general purpose LLM. Other times you should tell the user that there are not any relevant notes on the topic.`,
+          content: systemContent,
         },
         {
           role: 'system',
@@ -85,4 +192,14 @@ export const searchNotes = authenticatedProcedure
       ],
       stream: true,
     });
+
+    async function* streamWithReferences(): AsyncGenerator<SearchNotesStreamItem> {
+      yield { type: 'references', references };
+
+      for await (const part of chatStream as AsyncIterable<ChatStreamChunk>) {
+        yield { ...part, type: 'data' as const };
+      }
+    }
+
+    return streamWithReferences();
   });

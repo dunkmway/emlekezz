@@ -15,5 +15,18 @@
   <p class="error">{{error()}}</p>
   } @else {
   <markdown [data]="response()"></markdown>
-  } }
+  @if (references().length) {
+  <div class="references">
+    <span class="references__label">References:</span>
+    <mat-chip-listbox class="references__chips">
+      @for (ref of references(); track ref.noteId) {
+      <mat-chip-option selectable="false" (click)="noteClick.emit(ref.noteId)">
+        N{{ref.index}} · {{ref.title}} @if (ref.storedDate) {
+        <span>({{ref.storedDate | date:'mediumDate'}})</span>
+        }
+      </mat-chip-option>
+      }
+    </mat-chip-listbox>
+  </div>
+  } } }
 </div>

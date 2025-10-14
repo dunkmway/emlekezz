@@ -116,6 +116,12 @@ a {
       selected-state-layer-color: var(--accent-color),
     )
   );
+
+  @include mat.chips-overrides(
+    (
+      outline-color: var(--accent-color),
+    )
+  );
 }
 
 .fullscreen {

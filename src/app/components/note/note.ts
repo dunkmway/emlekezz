@@ -36,7 +36,7 @@ export class Note {
 
   protected readonly selectedTabIndex = signal<number>(-1);
   protected readonly noteContent = signal<string | null | undefined>(undefined);
-  protected readonly debouncedContent = debounced(this.noteContent, 5_000);
+  protected readonly debouncedContent = debounced(this.noteContent, 2_000);
 
   protected readonly isSaving = signal(false);
 
@@ -74,9 +74,11 @@ export class Note {
                 duration: 3000,
               });
             } finally {
-              this.isSaving.set(false);
               this.noteContent.set(undefined);
-              this.draft.refresh();
+              this.isSaving.set(false);
+              this.snackBar.open('Note saved!', 'Dismiss', {
+                duration: 3000,
+              });
             }
           }
         });
@@ -94,6 +96,12 @@ export class Note {
   }
 
   async addNoteTab(id: string) {
+    const foundIndex = this.tabs().findIndex(tab => tab.id === id);
+    if (foundIndex !== -1) {
+      this.selectedTabIndex.set(foundIndex);
+      return;
+    }
+
     const note = await this.trpc.user.getUserNote.mutate({ id });
 
     this.tabs.update(prev => {

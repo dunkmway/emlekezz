@@ -11,6 +11,8 @@
       text-ripple-color: var(--accent-background),
     )
   );
+
+  --icon-width: 16px;
 }
 
 .container {
@@ -24,8 +26,68 @@
 
 button {
   width: 100%;
-  justify-content: start;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  @include mat.icon-overrides(
+    (
+      color: var(--secondary-color),
+    )
+  );
+
+  mat-icon {
+    box-sizing: content-box;
+    visibility: hidden;
+    width: var(--icon-width);
+    height: var(--icon-width);
+    font-size: var(--icon-width);
+    padding: 4px;
+    border-radius: 4px;
+    margin: 0;
+
+    &:hover {
+      background-color: var(--accent-color);
+    }
+  }
+
+  &:hover {
+    mat-icon {
+      visibility: visible;
+    }
+  }
 }
+
+// button:not(.sidenav) {
+//   border: none;
+//   border-left: var(--border);
+//   border-top: var(--border);
+//   border-bottom: var(--border);
+//   padding: 8px 8px 8px calc(8px + var(--icon-width) + var(--gap));
+//   background-color: var(--secondary-background);
+//   color: var(--secondary-color);
+//   font-size: 14px;
+//   text-wrap: nowrap;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   gap: var(--gap);
+
+//   &:last-of-type {
+//     border-right: var(--border);
+//   }
+
+//   @include mat.icon-overrides(
+//     (
+//       color: var(--secondary-color),
+//     )
+//   );
+
+//   &:hover,
+//   &:focus {
+//     background-color: var(--accent-color);
+//   }
+// }
 
 .footer {
   display: flex;

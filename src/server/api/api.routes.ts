@@ -1,3 +1,4 @@
+import { deleteNote } from './user/delete-note/delete-note';
 import { getUserNote } from './user/get-user-note/get-user-note';
 import { getUserNotes } from './user/get-user-notes/get-user-notes';
 import { saveDraft } from './draft/save-draft/save-draft';
@@ -24,6 +25,7 @@ export const appRouter = router({
     searchNotes,
   },
   user: {
+    deleteNote,
     getUserNote,
     getUserNotes,
     getUserModels,

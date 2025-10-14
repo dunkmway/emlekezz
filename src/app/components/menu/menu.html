@@ -1,6 +1,9 @@
 <div class="container" (scroll)="onScroll($event)">
   @for (note of allNotes(); track note.id) {
-  <button matButton (click)="noteClick.emit(note.id)">{{note.title}}</button>
+  <button matButton (click)="noteClick.emit(note.id)">
+    <span>{{note.title}}</span>
+    <mat-icon (click)="deleteNote($event, note.id)">delete</mat-icon>
+  </button>
   }
 </div>
 <div class="footer">
