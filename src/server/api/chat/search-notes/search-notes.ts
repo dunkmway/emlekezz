@@ -10,13 +10,7 @@ const chunkLimit = 8;
 export const searchNotes = authenticatedProcedure
   .input(searchNotesInput)
   .query(async opts => {
-    const { chatModel, embeddingModel } = await prisma.user.findUniqueOrThrow({
-      where: { id: opts.ctx.userId },
-      select: {
-        chatModel: true,
-        embeddingModel: true,
-      },
-    });
+    const { chatModel, embeddingModel } = opts.ctx.user;
 
     if (chatModel === null) {
       throw new TRPCError({
@@ -66,20 +60,19 @@ export const searchNotes = authenticatedProcedure
 
     const context = chunks.length
       ? chunks
-          .map(
-            (chunk, index) =>
-              `Chunk ${index + 1} (Note ${chunk.noteId}):\n${chunk.content}`
-          )
+          .map((chunk, index) => `Note Chunk ${index + 1}:\n${chunk.content}`)
           .join('\n\n')
-      : 'No related note chunks were found for this question.';
+      : 'No related notes were found for this question.';
 
     return await ollama.chat({
       model: chatModel,
       messages: [
         {
           role: 'system',
-          content:
-            'Use the provided note chunks to answer the user question. If they are irrelevant, say you do not know.',
+          content: `
+            You are an AI assistant designed to answer questions using the user's personal notes as your primary knowledge source.
+            Sometimes the context will be "No related notes were found for this question", in this case you should decide if the question for the user can be answered in general without any specific notes,
+            essentially acting like a general purpose LLM. Other times you should tell the user that there are not any relevant notes on the topic.`,
         },
         {
           role: 'system',

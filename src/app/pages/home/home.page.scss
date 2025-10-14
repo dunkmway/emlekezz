@@ -9,12 +9,12 @@
       overflow-y: auto;
     }
 
-    app-chat {
-      flex: 1;
+    app-note {
+      flex: 2;
     }
 
-    app-note {
-      flex: 3;
+    app-chat {
+      flex: 1;
     }
   }
 }

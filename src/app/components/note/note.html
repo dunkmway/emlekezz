@@ -5,7 +5,8 @@
 @if (selectedTabIndex() === -1) {
 <textarea
   (keydown)="handleKeydown($event)"
-  [(ngModel)]="noteContent"></textarea>
+  [(ngModel)]="noteContent"
+  [disabled]="isSaving()"></textarea>
 } @else {
 <markdown [data]="tabs()[selectedTabIndex()].content"></markdown>
 }

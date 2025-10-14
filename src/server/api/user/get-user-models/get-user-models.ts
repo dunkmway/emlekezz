@@ -1,5 +1,4 @@
 import { z } from 'zod/v4';
-import { prisma } from '../../../../../prisma/client';
 import { authenticatedProcedure } from '../../trpc';
 import ollama from '../../../services/ollama';
 
@@ -20,13 +19,7 @@ export const getUserModels = authenticatedProcedure
   .mutation(async opts => {
     const models = (await ollama.list()).models;
 
-    const { chatModel, embeddingModel } = await prisma.user.findUniqueOrThrow({
-      where: { id: opts.ctx.userId },
-      select: {
-        chatModel: true,
-        embeddingModel: true,
-      },
-    });
+    const { chatModel, embeddingModel } = opts.ctx.user;
 
     return models.map(model => ({
       ...model,

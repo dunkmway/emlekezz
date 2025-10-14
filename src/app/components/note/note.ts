@@ -1,12 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import {
-  Component,
-  effect,
-  inject,
-  model,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, effect, inject, output, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TabOptions, Tabs } from '../tabs/tabs';
@@ -17,6 +10,7 @@ import { debounced } from '../../utils/debounced';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { markdownCommands } from './markdown';
+import { ConfirmationDialog } from '../confirmation/confirmation.dialog';
 
 @Component({
   selector: 'app-note',
@@ -34,6 +28,7 @@ import { markdownCommands } from './markdown';
 export class Note {
   private readonly trpc = inject(TRPC_CLIENT);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly confirmation = inject(ConfirmationDialog);
 
   readonly drawerOpen = output();
 
@@ -42,6 +37,8 @@ export class Note {
   protected readonly selectedTabIndex = signal<number>(-1);
   protected readonly noteContent = signal<string | null | undefined>(undefined);
   protected readonly debouncedContent = debounced(this.noteContent, 5_000);
+
+  protected readonly isSaving = signal(false);
 
   protected readonly draft = trpcResource(
     this.trpc.draft.upgetDraft.mutate,
@@ -56,19 +53,33 @@ export class Note {
     }
   });
 
-  private async saveNote() {
+  private saveNote() {
     const content = this.noteContent();
     if (content && content.trim() !== '') {
-      this.snackBar.open('Note saving', 'Dismiss', {
-        duration: 3000,
-      });
-      try {
-        await this.trpc.draft.saveDraft.mutate(null);
-      } catch {
-        this.snackBar.open('Failed to save note', 'Dismiss', {
-          duration: 3000,
+      this.confirmation
+        .open({
+          action: 'save this note',
+        })
+        .afterClosed()
+        .subscribe(async result => {
+          if (result) {
+            this.snackBar.open('Note saving', 'Dismiss', {
+              duration: 3000,
+            });
+            this.isSaving.set(true);
+            try {
+              await this.trpc.draft.saveDraft.mutate(null);
+            } catch {
+              this.snackBar.open('Failed to save note', 'Dismiss', {
+                duration: 3000,
+              });
+            } finally {
+              this.isSaving.set(false);
+              this.noteContent.set(undefined);
+              this.draft.refresh();
+            }
+          }
         });
-      }
     }
   }
 
@@ -86,7 +97,7 @@ export class Note {
     const note = await this.trpc.user.getUserNote.mutate({ id });
 
     this.tabs.update(prev => {
-      prev.push(note);
+      this.selectedTabIndex.set(prev.push(note) - 1);
       return prev;
     });
   }

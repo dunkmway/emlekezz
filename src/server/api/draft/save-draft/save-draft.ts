@@ -34,10 +34,7 @@ export const saveDraft = authenticatedProcedure
       });
     }
 
-    const { chatModel, embeddingModel } = await prisma.user.findUniqueOrThrow({
-      where: { id: opts.ctx.userId },
-      select: { chatModel: true, embeddingModel: true },
-    });
+    const { chatModel, embeddingModel } = opts.ctx.user;
 
     if (!embeddingModel) {
       throw new TRPCError({
@@ -72,7 +69,7 @@ export const saveDraft = authenticatedProcedure
       for (const chunk of embeddedChunks) {
         await tx.$executeRaw`
           INSERT INTO "Chunk" ("id", "noteId", "content", "embedding")
-          VALUES (${chunk.id}, ${note.id}, ${chunk.content}, ${Prisma.raw(`'${chunk.vectorLiteral}'::vector`)})
+          VALUES (${chunk.id}, ${note.id}, ${chunk.content}, ${Prisma.raw(`'${chunk.vector}'::vector`)})
         `;
       }
     });
