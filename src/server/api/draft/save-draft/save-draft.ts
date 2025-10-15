@@ -86,7 +86,7 @@ export const saveDraft = authenticatedProcedure
         const vectorLiteral = `[${chunk.vector.join(',')}]`;
 
         return Prisma.sql`
-          (${chunk.id}, ${note.id}, ${chunk.chunkIndex}, ${chunk.content}, ${Prisma.raw(`'${vectorLiteral}'::vector`)})
+          (${chunk.id}, ${note.id}, ${chunk.chunkIndex}, ${chunk.startChar}, ${chunk.endChar}, ${chunk.content}, ${Prisma.raw(`'${vectorLiteral}'::vector`)})
         `;
       });
 
@@ -95,6 +95,8 @@ export const saveDraft = authenticatedProcedure
           "id",
           "noteId",
           "chunkIndex",
+          "startChar",
+          "endChar",
           "content",
           "embedding"
         )
