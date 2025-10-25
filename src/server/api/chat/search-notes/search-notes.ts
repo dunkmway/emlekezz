@@ -86,11 +86,12 @@ export const searchNotes = authenticatedProcedure
         c."content",
         n."title",
         n."storedDate",
-        c.embedding <-> ${vector} AS "distance"
+        c.embedding <=> ${vector} AS "distance"
       FROM "Chunk" AS c
       INNER JOIN "Note" AS n ON n."id" = c."noteId"
       WHERE n."userId" = ${opts.ctx.userId}
-      ORDER BY c.embedding <-> ${vector}, n."storedDate" DESC NULLS LAST
+      AND c.embedding <=> ${vector} <= 0.6
+      ORDER BY "distance", n."storedDate" DESC NULLS LAST
       LIMIT ${Prisma.raw(chunkLimit.toString())}
     `);
 
@@ -155,7 +156,7 @@ export const searchNotes = authenticatedProcedure
             const chunkDescriptions = group.chunks
               .sort((a, b) => a.chunkIndex - b.chunkIndex)
               .map(chunk => {
-                return `Chunk ${chunk.chunkIndex + 1}:\n${chunk.content}`;
+                return `Chunk ${chunk.chunkIndex + 1} (${chunk.distance}):\n${chunk.content}`;
               })
               .join('\n\n');
 
